@@ -8,6 +8,7 @@ import "../src/Samurai.sol";
 /*
 forge script script/DeploySamurai.s.sol:DeploySamurai --rpc-url $RPC_POLYGON_MAINNET --broadcast --verify --chain polygon --etherscan-api-key $POLYGONSCAN_API_KEY -vvvv
 forge script script/DeploySamurai.s.sol:DeploySamurai --rpc-url $RPC_POLYGON_TEST --broadcast --verify --chain polygon --etherscan-api-key $POLYGONSCAN_API_KEY -vvvv
+forge script script/DeploySamurai.s.sol:DeploySamurai --rpc-url %RPC_POLYGON_TEST% --broadcast --verify --chain polygon --etherscan-api-key %POLYGONSCAN_API_KEY% -vvvv
 */
 contract DeploySamurai is Script {
     function run() external {
