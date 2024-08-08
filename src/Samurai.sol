@@ -2,9 +2,14 @@
 pragma solidity 0.8.25;
 
 import {ERC721} from "solady/tokens/ERC721.sol";
+import {Ownable} from "solady/auth/Ownable.sol";
 import {LibString} from "solady/utils/LibString.sol";
 
-contract Samurai is ERC721 {
+contract Samurai is ERC721, Ownable {
+
+    constructor() {
+        _initializeOwner(msg.sender);
+    }
     
     function name() public view virtual override returns (string memory) {
         return "Real Samurai Steampunk NFT";
@@ -23,11 +28,7 @@ contract Samurai is ERC721 {
         return _exists(id);
     }
 
-    function mint(address to, uint256 id) public virtual {
-        _mint(to, id);
-    }
-
-    function mintWithExtraDataUnchecked(address to, uint256 id, uint96 value) public virtual {
+    function mintWithExtraDataUnchecked(address to, uint256 id, uint96 value) public virtual onlyOwner {
         _mintAndSetExtraDataUnchecked(to, id, value);
     }
 
@@ -35,15 +36,15 @@ contract Samurai is ERC721 {
         _burn(msg.sender, id);
     }
 
-    function uncheckedBurn(uint256 id) public virtual {
+    function uncheckedBurn(uint256 id) public virtual onlyOwner {
         _burn(id);
     }
 
-    function safeMint(address to, uint256 id) public virtual {
+    function safeMint(address to, uint256 id) public virtual onlyOwner {
         _safeMint(to, id);
     }
 
-    function safeMint(address to, uint256 id, bytes calldata data) public virtual {
+    function safeMint(address to, uint256 id, bytes calldata data) public virtual onlyOwner {
         _safeMint(to, id, data);
     }
 
@@ -51,7 +52,7 @@ contract Samurai is ERC721 {
         return _getExtraData(id);
     }
 
-    function setExtraData(uint256 id, uint96 value) public virtual {
+    function setExtraData(uint256 id, uint96 value) public virtual onlyOwner {
         _setExtraData(id, value);
     }
 
@@ -59,7 +60,7 @@ contract Samurai is ERC721 {
         return _getAux(owner);
     }
 
-    function setAux(address owner, uint224 value) public virtual {
+    function setAux(address owner, uint224 value) public virtual onlyOwner {
         _setAux(owner, value);
     }
 
@@ -72,21 +73,11 @@ contract Samurai is ERC721 {
         _approve(account, id);
     }
 
-    function setApprovalForAll(address operator, bool approved) public virtual override {
-        super.setApprovalForAll(operator, approved);
-    }
-
-    function directSetApprovalForAll(address operator, bool approved) public virtual {
-        _setApprovalForAll(msg.sender, operator, approved);
-    }
 
     function transferFrom(address from, address to, uint256 id) public payable virtual override {
         super.transferFrom(from, to, id);
     }
 
-    function uncheckedTransferFrom(address from, address to, uint256 id) public payable virtual {
-        _transfer(address(0), from, to, id);
-    }
 
     function directTransferFrom(address from, address to, uint256 id) public virtual {
         _transfer(msg.sender, from, to, id);
