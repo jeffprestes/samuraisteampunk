@@ -27,4 +27,9 @@ contract Personagem is Ownable {
     function souUmSamurai() public view returns (bool) {
         return samurai.ownerOf(samuraiId) == address(this);
     }
+
+    function onERC721Received(address, address, uint256, bytes memory) public virtual returns (bytes4) {
+        return this.onERC721Received.selector;
+    }
+
 }
